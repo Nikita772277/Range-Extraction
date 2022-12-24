@@ -1,49 +1,9 @@
 ﻿using System;
 
 var ints = new int[] { -112, -110, -109, -107, -105, -104, -102, -101, -99 };
-var text = EEExtract(ints);
+var text = Extract(ints);
 Console.WriteLine(text);
 string Extract(int[] args)
-{
-    string text = "";
-    int counter = 0, number = args[0];
-    for (int i = 0; i < args.Length; i++)
-    {
-        if (args[i] == number)
-        {
-            counter++;
-            number++;
-            if (args[i + 1] != number)
-            {
-                if (counter == 0)
-                {
-                    text += $"{args[i]},";
-                    counter = 0;
-                    number = args[i];
-                }
-                if (counter >= 2)
-                {
-                    text += $"{args[i - counter + 1]}-{args[i]},";
-                    counter = 0;
-                    number = args[i];
-                }
-
-            }
-        }
-        else if (counter == 0)
-        {
-            text += $"{args[i]},";
-            counter = 0;
-            number = args[i + 1];
-        }
-    }
-    return text;  //TODO
-}
-
-
-
-
-string EEExtract(int[] args)
 {
 
     string[] split = new string[] { };
@@ -123,57 +83,5 @@ string EEExtract(int[] args)
     if (text[text.Length-1]==',')
     text = text.Remove(text.Length - 1);
     text = text.Replace(" ", "");
-    return text;  //TODO
-}
-
-
-
-
-
-string EExtract(int[] args)
-{
-    string text = "";
-    int counter = 1, number = args[0];
-    for (int i = 0; i < args.Length - 1; i++)
-    {
-        if (args[i] + 1 == args[i + 1])
-        {
-            counter++;
-            number++;
-            if (args[i + 1] != number)
-            {
-                if (counter == 0)
-                {
-                    text += $"{args[i]},";
-                    counter = 0;
-                    number = args[i];
-                }
-                if (counter >= 2)
-                {
-                    text += $"{args[i - counter]}-{args[i]},";
-                    counter = 0;
-                    number = args[i];
-                }
-
-            }
-        }
-        else if (args[i] != number)
-        {
-            if (counter >= 2)
-            {
-                text += $"{args[i - counter]}-{args[i - 1]},";
-                counter = 0;
-                number = args[i];
-            }
-            else if (counter == 0)
-            {
-                text += $"{args[i]},";
-                counter = 0;
-                number = args[i + 1];
-            }
-
-        }
-
-    }
     return text;  //TODO
 }
