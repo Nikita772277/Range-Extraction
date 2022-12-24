@@ -1,9 +1,6 @@
 ﻿using System;
 
-var ints = new int[] { 97, 98, 99, 100, 101, 102, -7, -6, 14, 15, 16, 17,
-    18, -46, -45, -44, -95, -74, 65, 66, 67, 68, 37, 38, 39, 40, 41, 42, 58, -31,
-    -30, -29, -28, -27, -43, -42, -41, -40, -39, -38, -37, 52, 53, 54, 67, 68,
-    69, 70, 71, 72, -48, -47, -46, -45, -44};
+var ints = new int[] { -112, -110, -109, -107, -105, -104, -102, -101, -99 };
 var text = EEExtract(ints);
 Console.WriteLine(text);
 string Extract(int[] args)
@@ -48,22 +45,37 @@ string Extract(int[] args)
 
 string EEExtract(int[] args)
 {
+
+    string[] split = new string[] { };
     bool check = false;
     string text = "";
     int counter = 0, number = args[0];
     for (int i = 0; i < args.Length - 1; i++)
     {
         number = args[i];
-        for (int j = i; j < args.Length ; j++)
+        if (i == args.Length - 2)
         {
-            if (args[i] == args[j] && args[j+1]!=number+1)
+            number = args[i + 1];
+        }
+        for (int j = i; j < args.Length; j++)
+        {
+            if (args[i] == args[j] && (args[j + 1] != number + 1 || i == args.Length - 1))
             {
-                if (text.Contains($"{args[j]}")==false)
+                for (int k = 0; k < split.Length; k++)
+                {
+                    if (split[k] == $"{args[j]}")
+                    {
+                        check = true;
+                        break;
+                    }
+                }
+                if (!check)
                 {
                     text += $"{args[j]},";
                     counter = 0;
                     number = args[j + 1];
                 }
+                check = false;
             }
             else if (args[j] == number)
             {
@@ -78,7 +90,7 @@ string EEExtract(int[] args)
                 {
                     if (check)
                         j += 1;
-                    if (counter == 0)
+                    if (counter == 1 && j == args.Length - 1)
                     {
                         text += $"{args[j]},";
                         counter = 0;
@@ -87,7 +99,8 @@ string EEExtract(int[] args)
                     else if (counter > 2)
                     {
                         i = j;
-                        text += $"{args[j - counter + 1]}-{args[j]},";
+                        if (i == args.Length - 2) { i--; }
+                        text += $"{args[j - counter + 1]}- {args[j]},";
                         counter = 0;
                         break;
                     }
@@ -101,8 +114,15 @@ string EEExtract(int[] args)
                 }
             }
         }
+        split = text.Split(',', ' ');
     }
-     text =text.Remove(text.Length-1);
+    if (split[split.Length - 2] != $"{args[args.Length - 1]}")
+    {
+        text += args[args.Length - 1];
+    }
+    if (text[text.Length-1]==',')
+    text = text.Remove(text.Length - 1);
+    text = text.Replace(" ", "");
     return text;  //TODO
 }
 
